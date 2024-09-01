@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>???</title>
+    <title>Загадочный сайт</title>
     <style>
         body {
             margin: 0;
@@ -32,6 +32,10 @@
             letter-spacing: 2px;
             text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
         }
+
+        audio {
+            display: none; /* Скрываем аудио элемент */
+        }
     </style>
 </head>
 <body>
@@ -40,17 +44,15 @@
         <div id="countdown" class="countdown"></div>
     </div>
 
+    <!-- Фоновая музыка -->
+    <audio autoplay loop>
+        <source src="???.mp3" type="audio/mpeg">
+        Ваш браузер не поддерживает элемент audio.
+    </audio>
+
     <script>
-        // Проверяем, существует ли сохранённая дата окончания таймера
-        let countdownDate = localStorage.getItem('countdownDate');
-        
-        // Если даты нет, устанавливаем её на 13 дней от текущего момента
-        if (!countdownDate) {
-            countdownDate = Date.now() + 13 * 24 * 60 * 60 * 1000; // 13 дней в миллисекундах
-            localStorage.setItem('countdownDate', countdownDate);
-        } else {
-            countdownDate = parseInt(countdownDate);
-        }
+        // Устанавливаем фиксированное время окончания таймера (например, 1 января 2025 года, 00:00 UTC)
+        let countdownDate = new Date('2025-01-01T00:00:00Z').getTime();
 
         // Обновляем таймер каждую секунду
         let countdownFunction = setInterval(function() {
