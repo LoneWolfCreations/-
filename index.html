@@ -156,7 +156,47 @@
         <div id="message"></div>
     </div>
 
+    <!-- Фоновая музыка -->
+    <audio autoplay loop>
+        <source src="your-music-file.mp3" type="audio/mpeg">
+        Ваш браузер не поддерживает элемент audio.
+    </audio>
+
+    <!-- Консоль -->
+    <div id="console"></div>
+
+    <!-- Глюк-эффект -->
+    <div id="glitch"></div>
+
+    <!-- Текст DVD -->
+    <div id="dvdText" class="dvd-text" style="display: none;">Lol</div>
+
+    <!-- Игра -->
+    <div id="gameContainer">
+        <canvas id="gameCanvas" width="800" height="400"></canvas>
+    </div>
+
     <script>
+        let countdownDate = new Date('2025-01-01T00:00:00Z').getTime();
+
+        let countdownFunction = setInterval(function() {
+            let now = Date.now();
+            let distance = countdownDate - now;
+
+            let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("countdown").innerHTML = days + "d " + hours + "h "
+            + minutes + "m " + seconds + "s ";
+
+            if (distance < 0) {
+                clearInterval(countdownFunction);
+                document.getElementById("countdown").innerHTML = "Когда?";
+            }
+        }, 1000);
+
         document.getElementById('codeInput').addEventListener('input', function() {
             let code = this.value.toLowerCase();
             let message = document.getElementById('message');
@@ -164,12 +204,8 @@
             let consoleElement = document.getElementById('console');
             let glitchElement = document.getElementById('glitch');
             let gameContainer = document.getElementById('gameContainer');
-            
-            // Добавление условия для команды "когданг"
-            if (code === 'когданг') {
-                message.innerHTML = 'через 17 суббот';
-                message.style.display = 'block';
-            } else if (code === 'awesome') {
+
+            if (code === 'awesome') {
                 document.body.style.animation = 'rainbow 5s infinite';
                 message.style.display = 'none';
             } else if (code === 'finerp') {
@@ -182,9 +218,32 @@
                 window.location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
             } else if (code === 'qww') {
                 window.location.href = 'https://example.com/target-page'; // Укажи здесь нужный URL
-            }
-            // Остальные условия ...
-        });
-    </script>
-</body>
-</html>
+            } else if (code === 'когданг') {
+                message.innerHTML = 'через 17 суббот';
+                message.style.display = 'block';
+            } else if (code === 'lol') {
+                dvdText.style.display = 'block';
+            } else if (code === 'test') {
+                message.innerHTML = 'да это жоска';
+                message.style.display = 'block';
+            } else if (code === 'bill') {
+                document.querySelector('.container').style.display = 'none';
+                dvdText.style.display = 'none';
+                document.body.requestFullscreen().then(() => {
+                    let fullscreenText = document.createElement('div');
+                    fullscreenText.className = 'fullscreen-text';
+                    fullscreenText.innerHTML = 'Ты не один, я тебя вижу...';
+                    document.body.appendChild(fullscreenText);
+                    setTimeout(() => {
+                        fullscreenText.style.opacity = 1;
+                    }, 100);
+                    setTimeout(() => {
+                        fullscreenText.style.opacity = 0;
+                        setTimeout(() => {
+                            fullscreenText.remove();
+                            consoleElement.style.display = 'block';
+                            let commands = ['killsys', 'kill you..', 'deleting all data...'];
+                            let i = 0;
+                            let commandInterval = setInterval(() => {
+                                if (i < commands.length
+        
