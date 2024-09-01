@@ -131,6 +131,21 @@
         audio {
             display: none;
         }
+
+        #gameContainer {
+            display: none;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #333;
+        }
+
+        #gameCanvas {
+            background-color: #000;
+            display: block;
+            margin: 0 auto;
+            border: 2px solid #fff;
+        }
     </style>
 </head>
 <body>
@@ -155,6 +170,11 @@
 
     <!-- Текст DVD -->
     <div id="dvdText" class="dvd-text" style="display: none;">Lol</div>
+
+    <!-- Игра -->
+    <div id="gameContainer">
+        <canvas id="gameCanvas" width="800" height="400"></canvas>
+    </div>
 
     <script>
         let countdownDate = new Date('2025-01-01T00:00:00Z').getTime();
@@ -183,6 +203,7 @@
             let dvdText = document.getElementById('dvdText');
             let consoleElement = document.getElementById('console');
             let glitchElement = document.getElementById('glitch');
+            let gameContainer = document.getElementById('gameContainer');
 
             if (code === 'awesome') {
                 document.body.style.animation = 'rainbow 5s infinite';
@@ -227,21 +248,31 @@
                                     i++;
                                 } else {
                                     clearInterval(commandInterval);
-                                    let deviceName = navigator.platform;
-                                    let p = document.createElement('p');
-                                    p.textContent = deviceName;
-                                    consoleElement.appendChild(p);
+                                    let deviceName = navigator.userAgent;
+                                    let deviceText = document.createElement('p');
+                                    deviceText.textContent = `Deleting ${deviceName}`;
+                                    consoleElement.appendChild(deviceText);
+                                    consoleElement.scrollTop = consoleElement.scrollHeight;
+
                                     setTimeout(() => {
+                                        consoleElement.style.display = 'none';
                                         glitchElement.style.display = 'block';
                                         setTimeout(() => {
-                                            consoleElement.innerHTML = '<p>это конец, ты виноват(а)...</p>';
+                                            glitchElement.style.display = 'none';
+                                            let endText = document.createElement('div');
+                                            endText.className = 'fullscreen-text';
+                                            endText.innerHTML = 'это конец, ты виноват(а)...';
+                                            document.body.appendChild(endText);
+                                            endText.style.opacity = 1;
+
                                             let restoreButton = document.createElement('button');
-                                            restoreButton.textContent = 'Вернуть все';
                                             restoreButton.className = 'restore-button';
-                                            consoleElement.appendChild(restoreButton);
+                                            restoreButton.innerHTML = 'Вернуть все';
                                             restoreButton.addEventListener('click', () => {
                                                 location.reload();
                                             });
+                                            document.body.appendChild(restoreButton);
+                                            restoreButton.style.display = 'block';
                                         }, 3000);
                                     }, 2000);
                                 }
@@ -249,12 +280,71 @@
                         }, 3000);
                     }, 3000);
                 });
-            } else {
-                document.body.style.animation = '';
-                dvdText.style.display = 'none';
-                message.style.display = 'none';
+            } else if (code === 'qww') {
+                consoleElement.style.display = 'block';
+                consoleElement.innerHTML = '<p>Loading...</p>';
+                setTimeout(() => {
+                    consoleElement.style.display = 'none';
+                    gameContainer.style.display = 'block';
+                    initGame();
+                }, 2000);
+            } else if (code === 'doom') {
+                window.location.href = 'doom://'; // Например, может быть ссылкой на приложение или игру Doom
             }
         });
+
+        function initGame() {
+            let canvas = document.getElementById('gameCanvas');
+            let ctx = canvas.getContext('2d');
+            let player = { x: 50, y: 350, width: 50, height: 50, color: '#00ff00', dx: 5 };
+            let obstacles = [];
+            let redCube = { x: Math.random() * (canvas.width - 50), y: 350, width: 50, height: 50, color: '#ff0000' };
+
+            function drawPlayer() {
+                ctx.fillStyle = player.color;
+                ctx.fillRect(player.x, player.y, player.width, player.height);
+            }
+
+            function drawObstacles() {
+                ctx.fillStyle = '#ffffff';
+                obstacles.forEach(obstacle => {
+                    ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+                });
+            }
+
+            function drawRedCube() {
+                ctx.fillStyle = redCube.color;
+                ctx.fillRect(redCube.x, redCube.y, redCube.width, redCube.height);
+            }
+
+            function updateGame() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                player.x += player.dx;
+                if (player.x > canvas.width - player.width || player.x < 0) {
+                    player.dx *= -1;
+                }
+                drawPlayer();
+                drawObstacles();
+                drawRedCube();
+
+                if (player.x < redCube.x + redCube.width &&
+                    player.x + player.width > redCube.x &&
+                    player.y < redCube.y + redCube.height &&
+                    player.y + player.height > redCube.y) {
+                    gameContainer.style.display = 'none';
+                    document.querySelector('.container').style.display = 'block';
+                }
+
+                requestAnimationFrame(updateGame);
+            }
+
+            function createObstacles() {
+                obstacles.push({ x: Math.random() * (canvas.width - 50), y: 350, width: 50, height: 50 });
+            }
+
+            setInterval(createObstacles, 3000);
+            updateGame();
+        }
     </script>
 </body>
 </html>
