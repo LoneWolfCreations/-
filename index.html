@@ -150,53 +150,13 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="title">Уже совсем скоро...</h1>
+        <h1 class="title">Fine Role Play</h1>
         <div id="countdown" class="countdown"></div>
         <input type="text" id="codeInput" placeholder="Введите код">
         <div id="message"></div>
     </div>
 
-    <!-- Фоновая музыка -->
-    <audio autoplay loop>
-        <source src="your-music-file.mp3" type="audio/mpeg">
-        Ваш браузер не поддерживает элемент audio.
-    </audio>
-
-    <!-- Консоль -->
-    <div id="console"></div>
-
-    <!-- Глюк-эффект -->
-    <div id="glitch"></div>
-
-    <!-- Текст DVD -->
-    <div id="dvdText" class="dvd-text" style="display: none;">Lol</div>
-
-    <!-- Игра -->
-    <div id="gameContainer">
-        <canvas id="gameCanvas" width="800" height="400"></canvas>
-    </div>
-
     <script>
-        let countdownDate = new Date('2025-01-01T00:00:00Z').getTime();
-
-        let countdownFunction = setInterval(function() {
-            let now = Date.now();
-            let distance = countdownDate - now;
-
-            let days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            let seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            document.getElementById("countdown").innerHTML = days + "d " + hours + "h "
-            + minutes + "m " + seconds + "s ";
-
-            if (distance < 0) {
-                clearInterval(countdownFunction);
-                document.getElementById("countdown").innerHTML = "Когда?";
-            }
-        }, 1000);
-
         document.getElementById('codeInput').addEventListener('input', function() {
             let code = this.value.toLowerCase();
             let message = document.getElementById('message');
@@ -204,8 +164,12 @@
             let consoleElement = document.getElementById('console');
             let glitchElement = document.getElementById('glitch');
             let gameContainer = document.getElementById('gameContainer');
-
-            if (code === 'awesome') {
+            
+            // Добавление условия для команды "когданг"
+            if (code === 'когданг') {
+                message.innerHTML = 'через 17 суббот';
+                message.style.display = 'block';
+            } else if (code === 'awesome') {
                 document.body.style.animation = 'rainbow 5s infinite';
                 message.style.display = 'none';
             } else if (code === 'finerp') {
@@ -216,135 +180,11 @@
                 message.style.display = 'block';
             } else if (code === 'дата выхода') {
                 window.location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
-            } else if (code === 'lol') {
-                dvdText.style.display = 'block';
-            } else if (code === 'test') {
-                message.innerHTML = 'да это жоска';
-                message.style.display = 'block';
-            } else if (code === 'bill') {
-                document.querySelector('.container').style.display = 'none';
-                dvdText.style.display = 'none';
-                document.body.requestFullscreen().then(() => {
-                    let fullscreenText = document.createElement('div');
-                    fullscreenText.className = 'fullscreen-text';
-                    fullscreenText.innerHTML = 'Ты не один, я тебя вижу...';
-                    document.body.appendChild(fullscreenText);
-                    setTimeout(() => {
-                        fullscreenText.style.opacity = 1;
-                    }, 100);
-                    setTimeout(() => {
-                        fullscreenText.style.opacity = 0;
-                        setTimeout(() => {
-                            fullscreenText.remove();
-                            consoleElement.style.display = 'block';
-                            let commands = ['killsys', 'kill you..', 'deleting all data...'];
-                            let i = 0;
-                            let commandInterval = setInterval(() => {
-                                if (i < commands.length) {
-                                    let p = document.createElement('p');
-                                    p.textContent = commands[i];
-                                    consoleElement.appendChild(p);
-                                    consoleElement.scrollTop = consoleElement.scrollHeight;
-                                    i++;
-                                } else {
-                                    clearInterval(commandInterval);
-                                    let deviceName = navigator.userAgent;
-                                    let deviceText = document.createElement('p');
-                                    deviceText.textContent = `Deleting ${deviceName}`;
-                                    consoleElement.appendChild(deviceText);
-                                    consoleElement.scrollTop = consoleElement.scrollHeight;
-
-                                    setTimeout(() => {
-                                        consoleElement.style.display = 'none';
-                                        glitchElement.style.display = 'block';
-                                        setTimeout(() => {
-                                            glitchElement.style.display = 'none';
-                                            let endText = document.createElement('div');
-                                            endText.className = 'fullscreen-text';
-                                            endText.innerHTML = 'это конец, ты виноват(а)...';
-                                            document.body.appendChild(endText);
-                                            endText.style.opacity = 1;
-
-                                            let restoreButton = document.createElement('button');
-                                            restoreButton.className = 'restore-button';
-                                            restoreButton.innerHTML = 'Вернуть все';
-                                            restoreButton.addEventListener('click', () => {
-                                                location.reload();
-                                            });
-                                            document.body.appendChild(restoreButton);
-                                            restoreButton.style.display = 'block';
-                                        }, 3000);
-                                    }, 2000);
-                                }
-                            }, 2000);
-                        }, 3000);
-                    }, 3000);
-                });
             } else if (code === 'qww') {
-                consoleElement.style.display = 'block';
-                consoleElement.innerHTML = '<p>Loading...</p>';
-                setTimeout(() => {
-                    consoleElement.style.display = 'none';
-                    gameContainer.style.display = 'block';
-                    initGame();
-                }, 2000);
-            } else if (code === 'doom') {
-                window.location.href = 'doom://'; // Например, может быть ссылкой на приложение или игру Doom
+                window.location.href = 'https://example.com/target-page'; // Укажи здесь нужный URL
             }
+            // Остальные условия ...
         });
-
-        function initGame() {
-            let canvas = document.getElementById('gameCanvas');
-            let ctx = canvas.getContext('2d');
-            let player = { x: 50, y: 350, width: 50, height: 50, color: '#00ff00', dx: 5 };
-            let obstacles = [];
-            let redCube = { x: Math.random() * (canvas.width - 50), y: 350, width: 50, height: 50, color: '#ff0000' };
-
-            function drawPlayer() {
-                ctx.fillStyle = player.color;
-                ctx.fillRect(player.x, player.y, player.width, player.height);
-            }
-
-            function drawObstacles() {
-                ctx.fillStyle = '#ffffff';
-                obstacles.forEach(obstacle => {
-                    ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
-                });
-            }
-
-            function drawRedCube() {
-                ctx.fillStyle = redCube.color;
-                ctx.fillRect(redCube.x, redCube.y, redCube.width, redCube.height);
-            }
-
-            function updateGame() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                player.x += player.dx;
-                if (player.x > canvas.width - player.width || player.x < 0) {
-                    player.dx *= -1;
-                }
-                drawPlayer();
-                drawObstacles();
-                drawRedCube();
-
-                if (player.x < redCube.x + redCube.width &&
-                    player.x + player.width > redCube.x &&
-                    player.y < redCube.y + redCube.height &&
-                    player.y + player.height > redCube.y) {
-                    gameContainer.style.display = 'none';
-                    document.querySelector('.container').style.display = 'block';
-                }
-
-                requestAnimationFrame(updateGame);
-            }
-
-            function createObstacles() {
-                obstacles.push({ x: Math.random() * (canvas.width - 50), y: 350, width: 50, height: 50 });
-            }
-
-            setInterval(createObstacles, 3000);
-            updateGame();
-        }
     </script>
 </body>
 </html>
