@@ -46,18 +46,17 @@
         
         // Если даты нет, устанавливаем её на 13 дней от текущего момента
         if (!countdownDate) {
-            countdownDate = new Date();
-            countdownDate.setDate(countdownDate.getDate() + 13);
+            countdownDate = Date.now() + 13 * 24 * 60 * 60 * 1000; // 13 дней в миллисекундах
             localStorage.setItem('countdownDate', countdownDate);
         } else {
-            countdownDate = new Date(countdownDate);
+            countdownDate = parseInt(countdownDate);
         }
 
         // Обновляем таймер каждую секунду
         let countdownFunction = setInterval(function() {
 
-            // Получаем текущую дату и время
-            let now = new Date().getTime();
+            // Получаем текущее время
+            let now = Date.now();
 
             // Вычисляем разницу между текущим временем и временем окончания таймера
             let distance = countdownDate - now;
