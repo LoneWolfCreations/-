@@ -41,33 +41,41 @@
     </div>
 
     <script>
-        // Set the date we're counting down to
-        let countdownDate = new Date();
-        countdownDate.setDate(countdownDate.getDate() + 13);
+        // Проверяем, существует ли сохранённая дата окончания таймера
+        let countdownDate = localStorage.getItem('countdownDate');
+        
+        // Если даты нет, устанавливаем её на 13 дней от текущего момента
+        if (!countdownDate) {
+            countdownDate = new Date();
+            countdownDate.setDate(countdownDate.getDate() + 13);
+            localStorage.setItem('countdownDate', countdownDate);
+        } else {
+            countdownDate = new Date(countdownDate);
+        }
 
-        // Update the countdown every second
+        // Обновляем таймер каждую секунду
         let countdownFunction = setInterval(function() {
 
-            // Get today's date and time
+            // Получаем текущую дату и время
             let now = new Date().getTime();
 
-            // Find the distance between now and the countdown date
+            // Вычисляем разницу между текущим временем и временем окончания таймера
             let distance = countdownDate - now;
 
-            // Time calculations for days, hours, minutes, and seconds
+            // Вычисляем дни, часы, минуты и секунды
             let days = Math.floor(distance / (1000 * 60 * 60 * 24));
             let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             let seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            // Display the result in the element with id="countdown"
+            // Отображаем результат в элементе с id="countdown"
             document.getElementById("countdown").innerHTML = days + "d " + hours + "h "
             + minutes + "m " + seconds + "s ";
 
-            // If the countdown is finished, write some text
+            // Если таймер достиг нуля, выводим сообщение
             if (distance < 0) {
                 clearInterval(countdownFunction);
-                document.getElementById("countdown").innerHTML = "The time has come!";
+                document.getElementById("countdown").innerHTML = "Когда?";
             }
         }, 1000);
     </script>
