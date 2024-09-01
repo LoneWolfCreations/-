@@ -16,6 +16,7 @@
             color: #fff;
             font-family: 'Arial', sans-serif;
             transition: background-color 0.5s;
+            overflow: hidden;
         }
 
         .container {
@@ -66,8 +67,69 @@
             100% { background-color: red; }
         }
 
+        @keyframes dvd {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(80vw, 0); }
+            50% { transform: translate(80vw, 80vh); }
+            75% { transform: translate(0, 80vh); }
+            100% { transform: translate(0, 0); }
+        }
+
+        .dvd-text {
+            position: absolute;
+            font-size: 3rem;
+            animation: dvd 5s linear infinite;
+            color: #ff0;
+        }
+
+        .fullscreen-text {
+            font-size: 3rem;
+            display: none;
+            opacity: 0;
+            transition: opacity 3s;
+        }
+
+        #console {
+            font-family: 'Courier New', monospace;
+            color: #00ff00;
+            background-color: #000;
+            width: 100%;
+            height: 100vh;
+            display: none;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        #glitch {
+            display: none;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(90deg, rgba(0,255,255,0.5) 0%, rgba(255,0,255,0.5) 100%);
+            mix-blend-mode: screen;
+            animation: glitch 0.1s infinite;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0, 0); }
+            33% { transform: translate(-10px, -10px); }
+            66% { transform: translate(10px, 10px); }
+            100% { transform: translate(0, 0); }
+        }
+
+        .restore-button {
+            display: none;
+            padding: 10px 20px;
+            background-color: #ff0000;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
         audio {
-            display: none; /* Скрываем аудио элемент */
+            display: none;
         }
     </style>
 </head>
@@ -85,41 +147,43 @@
         Ваш браузер не поддерживает элемент audio.
     </audio>
 
+    <!-- Консоль -->
+    <div id="console"></div>
+
+    <!-- Глюк-эффект -->
+    <div id="glitch"></div>
+
+    <!-- Текст DVD -->
+    <div id="dvdText" class="dvd-text" style="display: none;">Lol</div>
+
     <script>
-        // Устанавливаем фиксированное время окончания таймера (например, 1 января 2025 года, 00:00 UTC)
         let countdownDate = new Date('2025-01-01T00:00:00Z').getTime();
 
-        // Обновляем таймер каждую секунду
         let countdownFunction = setInterval(function() {
-
-            // Получаем текущее время
             let now = Date.now();
-
-            // Вычисляем разницу между текущим временем и временем окончания таймера
             let distance = countdownDate - now;
 
-            // Вычисляем дни, часы, минуты и секунды
             let days = Math.floor(distance / (1000 * 60 * 60 * 24));
             let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             let seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            // Отображаем результат в элементе с id="countdown"
             document.getElementById("countdown").innerHTML = days + "d " + hours + "h "
             + minutes + "m " + seconds + "s ";
 
-            // Если таймер достиг нуля, выводим сообщение
             if (distance < 0) {
                 clearInterval(countdownFunction);
                 document.getElementById("countdown").innerHTML = "Когда?";
             }
         }, 1000);
 
-        // Обработка ввода текста
         document.getElementById('codeInput').addEventListener('input', function() {
             let code = this.value.toLowerCase();
             let message = document.getElementById('message');
-            
+            let dvdText = document.getElementById('dvdText');
+            let consoleElement = document.getElementById('console');
+            let glitchElement = document.getElementById('glitch');
+
             if (code === 'awesome') {
                 document.body.style.animation = 'rainbow 5s infinite';
                 message.style.display = 'none';
@@ -131,8 +195,63 @@
                 message.style.display = 'block';
             } else if (code === 'дата выхода') {
                 window.location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
+            } else if (code === 'lol') {
+                dvdText.style.display = 'block';
+            } else if (code === 'test') {
+                message.innerHTML = 'да это жоска';
+                message.style.display = 'block';
+            } else if (code === 'bill') {
+                document.querySelector('.container').style.display = 'none';
+                dvdText.style.display = 'none';
+                document.body.requestFullscreen().then(() => {
+                    let fullscreenText = document.createElement('div');
+                    fullscreenText.className = 'fullscreen-text';
+                    fullscreenText.innerHTML = 'Ты не один, я тебя вижу...';
+                    document.body.appendChild(fullscreenText);
+                    setTimeout(() => {
+                        fullscreenText.style.opacity = 1;
+                    }, 100);
+                    setTimeout(() => {
+                        fullscreenText.style.opacity = 0;
+                        setTimeout(() => {
+                            fullscreenText.remove();
+                            consoleElement.style.display = 'block';
+                            let commands = ['killsys', 'kill you..', 'deleting all data...'];
+                            let i = 0;
+                            let commandInterval = setInterval(() => {
+                                if (i < commands.length) {
+                                    let p = document.createElement('p');
+                                    p.textContent = commands[i];
+                                    consoleElement.appendChild(p);
+                                    consoleElement.scrollTop = consoleElement.scrollHeight;
+                                    i++;
+                                } else {
+                                    clearInterval(commandInterval);
+                                    let deviceName = navigator.platform;
+                                    let p = document.createElement('p');
+                                    p.textContent = deviceName;
+                                    consoleElement.appendChild(p);
+                                    setTimeout(() => {
+                                        glitchElement.style.display = 'block';
+                                        setTimeout(() => {
+                                            consoleElement.innerHTML = '<p>это конец, ты виноват(а)...</p>';
+                                            let restoreButton = document.createElement('button');
+                                            restoreButton.textContent = 'Вернуть все';
+                                            restoreButton.className = 'restore-button';
+                                            consoleElement.appendChild(restoreButton);
+                                            restoreButton.addEventListener('click', () => {
+                                                location.reload();
+                                            });
+                                        }, 3000);
+                                    }, 2000);
+                                }
+                            }, 2000);
+                        }, 3000);
+                    }, 3000);
+                });
             } else {
                 document.body.style.animation = '';
+                dvdText.style.display = 'none';
                 message.style.display = 'none';
             }
         });
