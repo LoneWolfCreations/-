@@ -15,6 +15,7 @@
             background-color: #000;
             color: #fff;
             font-family: 'Arial', sans-serif;
+            transition: background-color 0.5s;
         }
 
         .container {
@@ -33,6 +34,38 @@
             text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
         }
 
+        input[type="text"] {
+            padding: 10px;
+            font-size: 1.5rem;
+            margin-top: 20px;
+            border: 2px solid #fff;
+            background-color: #222;
+            color: #fff;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        input[type="text"]::placeholder {
+            color: #aaa;
+        }
+
+        #message {
+            margin-top: 20px;
+            font-size: 1.5rem;
+            display: none;
+        }
+
+        @keyframes rainbow {
+            0% { background-color: red; }
+            14% { background-color: orange; }
+            28% { background-color: yellow; }
+            42% { background-color: green; }
+            57% { background-color: blue; }
+            71% { background-color: indigo; }
+            85% { background-color: violet; }
+            100% { background-color: red; }
+        }
+
         audio {
             display: none; /* Скрываем аудио элемент */
         }
@@ -40,13 +73,15 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="title">Fine Role Play?</h1>
+        <h1 class="title">Уже совсем скоро...</h1>
         <div id="countdown" class="countdown"></div>
+        <input type="text" id="codeInput" placeholder="Введите код">
+        <div id="message"></div>
     </div>
 
     <!-- Фоновая музыка -->
     <audio autoplay loop>
-        <source src="Secret.mp3" type="audio/mpeg">
+        <source src="your-music-file.mp3" type="audio/mpeg">
         Ваш браузер не поддерживает элемент audio.
     </audio>
 
@@ -79,6 +114,28 @@
                 document.getElementById("countdown").innerHTML = "Когда?";
             }
         }, 1000);
+
+        // Обработка ввода текста
+        document.getElementById('codeInput').addEventListener('input', function() {
+            let code = this.value.toLowerCase();
+            let message = document.getElementById('message');
+            
+            if (code === 'awesome') {
+                document.body.style.animation = 'rainbow 5s infinite';
+                message.style.display = 'none';
+            } else if (code === 'finerp') {
+                message.innerHTML = 'Потерпи...';
+                message.style.display = 'block';
+            } else if (code === 'maxon') {
+                message.innerHTML = 'да это я';
+                message.style.display = 'block';
+            } else if (code === 'дата выхода') {
+                window.location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
+            } else {
+                document.body.style.animation = '';
+                message.style.display = 'none';
+            }
+        });
     </script>
 </body>
 </html>
