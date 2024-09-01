@@ -245,5 +245,38 @@
                             let commands = ['killsys', 'kill you..', 'deleting all data...'];
                             let i = 0;
                             let commandInterval = setInterval(() => {
-                                if (i < commands.length
-        
+                                if (i < commands.length) {
+                                    consoleElement.innerHTML += commands[i] + '<br>';
+                                    i++;
+                                } else {
+                                    clearInterval(commandInterval);
+                                    setTimeout(() => {
+                                        glitchElement.style.display = 'block';
+                                    }, 2000);
+                                    setTimeout(() => {
+                                        glitchElement.style.display = 'none';
+                                        setTimeout(() => {
+                                            gameContainer.style.display = 'block';
+                                            let gameCanvas = document.getElementById('gameCanvas');
+                                            let ctx = gameCanvas.getContext('2d');
+                                            ctx.fillStyle = '#ff0000';
+                                            ctx.font = '30px Arial';
+                                            ctx.fillText('Game Loading...', 50, 50);
+                                        }, 2000);
+                                    }, 2000);
+                                }
+                            }, 1000);
+                        }, 5000);
+                    }, 3000);
+                });
+            } else {
+                message.style.display = 'none';
+                dvdText.style.display = 'none';
+                consoleElement.style.display = 'none';
+                glitchElement.style.display = 'none';
+                gameContainer.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
